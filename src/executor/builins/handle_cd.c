@@ -19,6 +19,8 @@ uint8_t	handle_cd(t_cmd *cmd)
 		exit_status = EXIT_SUCCESS;
 	}
 	cmd->minishell->exit_status = exit_status;
+
+	printf("Exit status: %d\n",cmd->minishell->exit_status); //  test
 	if (cmd->in_pipe)
 		exit (exit_status);
 	return (exit_status);

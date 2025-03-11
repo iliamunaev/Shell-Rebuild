@@ -109,6 +109,9 @@ uint8_t	handle_echo(t_cmd *cmd)
 	i = handle_echo_flags(cmd, &newline_flag);
 	exit_status = print_content(cmd, i, &newline_flag);
 	cmd->minishell->exit_status = exit_status;
+
+	printf("Exit status: %d\n",cmd->minishell->exit_status); //  test
+	
 	if (cmd->in_pipe)
 		exit(exit_status);
 	return (exit_status);

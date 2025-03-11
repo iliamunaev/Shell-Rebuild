@@ -40,5 +40,6 @@ uint8_t run_executor(t_cmd *cmd)
 		return (exec_builtin(cmd));
 	cmd->in_pipe = true;
 	exec_cmd(cmd);
+	printf("Exit status: %d\n",cmd->minishell->exit_status); //  test
 	return (cmd->minishell->exit_status);
 }

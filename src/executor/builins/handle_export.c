@@ -101,6 +101,8 @@ uint8_t	handle_export(t_cmd *cmd)
 		i++;
 	}
 	update_env(cmd->minishell);
+
+	printf("Exit status: %d\n",cmd->minishell->exit_status); //  test
 	if (cmd->in_pipe)
 		exit(exit_status);
 	return (exit_status);
