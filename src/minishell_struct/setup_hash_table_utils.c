@@ -2,8 +2,8 @@
 
 unsigned int hash_function(const char *key)
 {
-	unsigned long hash;
-	int c;
+	unsigned long	hash;
+	int				c;
 
 	hash = 5381;
 	while ((c = *key++))

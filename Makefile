@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 
 # Default flags
 LDFLAGS :=
-CFLAGS  := -g -Wall -Wextra -Werror -Wpedantic
+CFLAGS  := -g -Wall -Wextra -Werror
 
 # macOS-specific flags for Readline (2DO: fix extern void rl_replace_line(const char *, int) in signals.c)
 ifeq ($(UNAME), Darwin)

@@ -24,10 +24,13 @@ void	print_export_from_ht(t_mshell *mshell)
 		var = mshell->hash_table->buckets[i];
 		while (var)
 		{
-			if (var->value)
-				printf("declare -x %s=\"%s\"\n", var->key, var->value);
-			else
-				printf("declare -x %s\n", var->key);
+			if (var->key)
+			{
+				if (var->value)
+					printf("declare -x %s=\"%s\"\n", var->key, var->value);
+				else
+					printf("declare -x %s\n", var->key);
+			}
 			var = var->next;
 		}
 		i++;
