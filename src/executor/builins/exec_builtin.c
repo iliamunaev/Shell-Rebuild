@@ -14,6 +14,8 @@ uint8_t	exec_builtin(t_cmd *cmd)
 		return (handle_env(cmd));
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
 		return (handle_export(cmd));
+	else if (ft_strcmp(cmd->argv[0], "unset") == 0)
+		return (handle_unset(cmd));
 	else
 		return (EXIT_FAILURE);
 	return (EXIT_FAILURE);

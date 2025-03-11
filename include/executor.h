@@ -29,6 +29,7 @@ uint8_t			handle_pwd(t_cmd *cmd);
 uint8_t			handle_cd(t_cmd *cmd);
 uint8_t			handle_env(t_cmd *cmd);
 uint8_t			handle_export(t_cmd *cmd);
+uint8_t			handle_unset(t_cmd *cmd);
 t_mshell_var	*create_new_variable( char *key,  char *value, int assigned);
 
 // redirections <, <<, >, >>

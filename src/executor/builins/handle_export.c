@@ -83,6 +83,7 @@ uint8_t	handle_export(t_cmd *cmd)
 	uint8_t	exit_status;
 	uint8_t	ret;
 
+	exit_status = (EXIT_SUCCESS);
 	if (!cmd->argv[1])
 	{
 		print_export_from_ht(cmd->minishell);
