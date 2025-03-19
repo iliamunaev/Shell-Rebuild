@@ -47,15 +47,19 @@ uint8_t run_executor(t_cmd *cmd)
 		print_error("Error (run_executor): missing components\n");
 		return (EXIT_FAILURE);
 	}
-	// test
-	// int i = 0;
-	// while(cmd->argv[i])
-	// {
-	// 	printf("Debug: argv[%d]: {%s}\n", i, cmd->argv[i]);
-	// 	i++;
-	// }
-	// printf("Debug: argv[%d]: {%s}\n", i, cmd->argv[i]);
-	// end test
+	// start test -------------------------------------------------------//
+	int i = 0;
+	while(cmd->argv[i])
+	{
+		printf("Debug: argv[%d]: {%s}\n", i, cmd->argv[i]);
+		i++;
+	}
+	printf("Debug: argv[%d]: {%s}\n", i, cmd->argv[i]);
+	if (cmd->in_redir)
+		printf("Debug: filename: {%s}\n", i + 1, cmd->in_redir->filename);
+	if (cmd->out_redir)
+		printf("Debug: filename: {%s}\n", i + 1, cmd->out_redir->filename);
+	// end test -------------------------------------------------------------//
 
 	if (is_builtin(cmd) && !cmd->next)
 	{

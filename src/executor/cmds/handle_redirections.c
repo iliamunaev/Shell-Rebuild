@@ -33,6 +33,8 @@ static void	handle_in_redirection(t_cmd *cmd)
 
 	if (!cmd->in_redir)
 		fatal_error_child(cmd, EXIT_FAILURE);
+	if (cmd->in_redir->type == R_HEREDOC)
+		handle_heredoc(cmd);
 	in = open(cmd->in_redir->filename, O_RDONLY);
 	if (in < 0)
 		fatal_error_child(cmd, EXIT_FAILURE);
