@@ -56,9 +56,9 @@ uint8_t run_executor(t_cmd *cmd)
 	}
 	printf("Debug: argv[%d]: {%s}\n", i, cmd->argv[i]);
 	if (cmd->in_redir)
-		printf("Debug: filename: {%s}\n", i + 1, cmd->in_redir->filename);
+		printf("Debug: filename: {%s}\n", cmd->in_redir->filename);
 	if (cmd->out_redir)
-		printf("Debug: filename: {%s}\n", i + 1, cmd->out_redir->filename);
+		printf("Debug: filename: {%s}\n", cmd->out_redir->filename);
 	// end test -------------------------------------------------------------//
 
 	if (is_builtin(cmd) && !cmd->next)

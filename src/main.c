@@ -36,6 +36,8 @@ uint8_t	run_interactive_mode(t_mshell *mshell)
 	{
 		input = readline("minishell: ");
 
+		printf("Input line: [%s]\n", input);
+
 		// check for EOF / Ctrl+D
 		if (!input)
 			return (EXIT_FAILURE);
