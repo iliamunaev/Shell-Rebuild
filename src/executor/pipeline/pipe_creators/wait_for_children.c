@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait_for_children.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:46:47 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/28 18:12:40 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:36:15 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 uint8_t	wait_for_children(pid_t *pids, int count)
 {
 	int		i;
+	int		sig;
 	int		status;
 	uint8_t	exit_status;
 
@@ -49,10 +50,16 @@ uint8_t	wait_for_children(pid_t *pids, int count)
 		waitpid(pids[i], &status, 0);
 		if (i == count - 1)
 		{
+
 			if (WIFEXITED(status))
 				exit_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				exit_status = 128 + WTERMSIG(status);
+			{
+				sig = WTERMSIG(status);
+				exit_status = 128 + sig;
+				if (sig == SIGSEGV)
+					print_error("minishell: segmentation fault (core dumped)\n");
+			}
 			else
 				exit_status = EXIT_FAILURE;
 		}

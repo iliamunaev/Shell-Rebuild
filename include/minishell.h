@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:45:51 by imunaev-          #+#    #+#             */
-/*   Updated: 2025/04/29 10:26:45 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:11:07 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@
 # include "command.h"
 
 // limits
-# define ERROR_BUF_SIZE 256
+# define ERROR_BUF_SIZE 512
+# define PRINT_BUF_SIZE 512
 # define MS_PATHMAX 4096
 # define HASH_SIZE 128
 # define HEREDOC_MAX_SIZE 1048576

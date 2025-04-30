@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:45:04 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/30 00:35:07 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:12:25 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,50 @@ void	print_env(t_cmd *cmd)
  * @return `EXIT_SUCCESS` (0) on success,
  *         `127` if called with arguments (invalid usage).
  */
+// uint8_t	handle_env(t_cmd *cmd)
+// {
+// 	uint8_t	exit_status;
+
+// 	if (!cmd)
+// 		return (no_cmd_error("env"));
+// 	if (cmd->argv[1])
+// 	{
+// 		print_error("env: ‘");
+// 		print_error(cmd->argv[1]);
+// 		print_error("‘: No such file or directory\n");
+// 		exit_status = 127;
+// 		return (exit_status);
+// 	}
+// 	print_env(cmd);
+// 	exit_status = EXIT_SUCCESS;
+// 	return (exit_status);
+// }
 uint8_t	handle_env(t_cmd *cmd)
 {
-	uint8_t	exit_status;
+	char		buffer[PRINT_BUF_SIZE];
+	size_t		i;
+	char		*arg;
+	const char	*prefix;
+	const char	*suffix;
 
+	i = 0;
 	if (!cmd)
 		return (no_cmd_error("env"));
 	if (cmd->argv[1])
 	{
-		print_error("env: ‘");
-		print_error(cmd->argv[1]);
-		print_error("‘: No such file or directory\n");
-		exit_status = 127;
-		return (exit_status);
+		prefix = "env: ‘";
+		suffix = "’: No such file or directory\n";
+		arg = cmd->argv[1];
+		while (*prefix && i < sizeof(buffer) - 1)
+			buffer[i++] = *prefix++;
+		while (*arg && i < sizeof(buffer) - 1)
+			buffer[i++] = *arg++;
+		while (*suffix && i < sizeof(buffer) - 1)
+			buffer[i++] = *suffix++;
+		buffer[i] = '\0';
+		write(STDERR_FILENO, buffer, i);
+		return (127);
 	}
 	print_env(cmd);
-	exit_status = EXIT_SUCCESS;
-	return (exit_status);
+	return (EXIT_SUCCESS);
 }

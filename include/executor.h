@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:46:42 by imunaev-          #+#    #+#             */
-/*   Updated: 2025/04/30 12:34:54 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:27:27 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,9 @@ uint8_t					perror_exit_child(t_cmd *cmd,
 							char *msg, u_int8_t exit_status);
 void					cmd_missing_command_error(t_cmd *cmd);
 void					export_error(t_mshell_var *pair);
-u_int8_t				unset_error(char *str);
+u_int8_t				unset_error(const char *str);
 int						error_return(char *msg, int exit_status);
-uint8_t					no_cmd_error(char *msg);
+uint8_t					no_cmd_error(const char *msg);
 void					child_execve_error(t_cmd *cmd);
 void					handle_is_directory(t_cmd *cmd);
 void					handle_not_found_or_command(t_cmd *cmd);

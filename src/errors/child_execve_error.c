@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:43:26 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/29 21:25:16 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:26:18 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,31 @@
  * @param info A `t_exit_info` struct containing error message parts
  *             and exit metadata.
  */
+// void	print_and_exit(t_exit_info info)
+// {
+// 	if (info.prefix)
+// 		print_error(info.prefix);
+// 	if (info.arg)
+// 		print_error(info.arg);
+// 	if (info.msg)
+// 		print_error(info.msg);
+// 	if (info.mshell)
+// 		free_minishell(info.mshell);
+// 	_exit(info.code);
+// }
 void	print_and_exit(t_exit_info info)
 {
+	char	buf[ERROR_BUF_SIZE];
+
+	buf[0] = '\0';
 	if (info.prefix)
-		print_error(info.prefix);
+		ft_strlcat(buf, info.prefix, ERROR_BUF_SIZE);
 	if (info.arg)
-		print_error(info.arg);
+		ft_strlcat(buf, info.arg, ERROR_BUF_SIZE);
 	if (info.msg)
-		print_error(info.msg);
+		ft_strlcat(buf, info.msg, ERROR_BUF_SIZE);
+	if (*buf)
+		write(STDERR_FILENO, buf, ft_strlen(buf));
 	if (info.mshell)
 		free_minishell(info.mshell);
 	_exit(info.code);

@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:43:50 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/29 11:44:51 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:22:36 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,25 @@ uint8_t	perror_exit_child(t_cmd *cmd, char *msg, u_int8_t exit_status)
  * @param msg A custom string for context (e.g., the command name).
  * @return Always returns `EXIT_FAILURE` (1).
  */
-uint8_t	no_cmd_error(char *msg)
+// uint8_t	no_cmd_error(char *msg)
+// {
+// 	print_error("-minishell: ");
+// 	print_error(msg);
+// 	print_error(": no cmd or argv found\n");
+// 	return (EXIT_FAILURE);
+// }
+uint8_t	no_cmd_error(const char *msg)
 {
-	print_error("-minishell: ");
-	print_error(msg);
-	print_error(": no cmd or argv found\n");
+	char	buf[ERROR_BUF_SIZE];
+
+	buf[0] = '\0';
+	ft_strlcpy(buf, "-minishell: ", ERROR_BUF_SIZE);
+	if (msg)
+	{
+		ft_strlcat(buf, msg, ERROR_BUF_SIZE);
+		ft_strlcat(buf, ": ", ERROR_BUF_SIZE);
+	}
+	ft_strlcat(buf, "no cmd or argv found\n", ERROR_BUF_SIZE);
+	write(STDERR_FILENO, buf, ft_strlen(buf));
 	return (EXIT_FAILURE);
 }

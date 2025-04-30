@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:44:51 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/23 14:44:52 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 17:44:34 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,30 @@
  * @param str The null-terminated string to print.
  * @return `EXIT_SUCCESS` (0) on success, `EXIT_FAILURE` (1) on failure.
  */
+// static int	ft_putstr_custom(char *str)
+// {
+// 	ssize_t	written;
+
+// 	written = write(STDOUT_FILENO, str, ft_strlen(str));
+// 	if (written == -1)
+// 		return (perror_return("ft_putstr_custom: write", EXIT_FAILURE));
+// 	return (EXIT_SUCCESS);
+// }
 static int	ft_putstr_custom(char *str)
 {
 	ssize_t	written;
+	ssize_t	total = 0;
+	ssize_t	len = ft_strlen(str);
 
-	written = write(STDOUT_FILENO, str, ft_strlen(str));
-	if (written == -1)
-		return (perror_return("ft_putstr_custom: write", EXIT_FAILURE));
+	while (total < len)
+	{
+		written = write(STDOUT_FILENO, str + total, len - total);
+		if (written == -1)
+			return (perror_return("ft_putstr_custom: write", EXIT_FAILURE));
+		total += written;
+	}
 	return (EXIT_SUCCESS);
 }
-
 /**
  * @brief Prints the actual content (arguments) of the `echo` command.
  *

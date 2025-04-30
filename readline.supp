@@ -1,22 +1,7 @@
-### === Readline & Tinfo Suppressions ===
 {
-   readline_libreadline
+   readline_leak_suppress
    Memcheck:Leak
    match-leak-kinds: reachable
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8
-}
-
-{
-   readline_libtinfo
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6
-}
-
-{
-   readline_nc_setupterm
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:_nc_setupterm
-   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6
+   ...
+   fun:readline
 }

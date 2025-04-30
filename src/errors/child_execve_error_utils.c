@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:43:16 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/30 01:29:34 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:26:37 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,43 @@ void	handle_is_directory(t_cmd *cmd)
  *
  * @param cmd The command structure containing argv and shell context.
  */
+// void	handle_not_found_or_command(t_cmd *cmd)
+// {
+// 	char	*path;
+
+// 	if (errno != ENOENT)
+// 		return ;
+// 	print_error("-minishell: ");
+// 	print_error(cmd->argv[0]);
+// 	path = ms_getenv(cmd->minishell, "PATH");
+
+// 	if (ft_strchr(cmd->argv[0], '/') || !path || path[0] == '\0')
+// 		print_error(": No such file or directory\n");
+// 	else
+// 		print_error(": command not found\n");
+// 	free_minishell(cmd->minishell);
+// 	_exit(127);
+// }
+
 void	handle_not_found_or_command(t_cmd *cmd)
 {
 	char	*path;
+	char	buf[ERROR_BUF_SIZE];
 
-	if (errno != ENOENT)
-	return ;
-	print_error("-minishell: ");
-	print_error(cmd->argv[0]);
+	if (errno != ENOENT || !cmd || !cmd->argv || !cmd->argv[0])
+		return ;
+
+	buf[0] = '\0';
+	ft_strlcpy(buf, "-minishell: ", ERROR_BUF_SIZE);
+	ft_strlcat(buf, cmd->argv[0], ERROR_BUF_SIZE);
+
 	path = ms_getenv(cmd->minishell, "PATH");
-
 	if (ft_strchr(cmd->argv[0], '/') || !path || path[0] == '\0')
-		print_error(": No such file or directory\n");
+		ft_strlcat(buf, ": No such file or directory\n", ERROR_BUF_SIZE);
 	else
-		print_error(": command not found\n");
+		ft_strlcat(buf, ": command not found\n", ERROR_BUF_SIZE);
+
+	write(STDERR_FILENO, buf, ft_strlen(buf));
 	free_minishell(cmd->minishell);
 	_exit(127);
 }
@@ -122,11 +145,23 @@ void	handle_exec_format_error(t_cmd *cmd)
  *
  * @param cmd The command that caused the error.
  */
+// void	handle_generic_execve_error(t_cmd *cmd)
+// {
+// 	print_error("-minishell: execve: ");
+// 	print_error(strerror(errno));
+// 	print_error("\n");
+// 	free_minishell(cmd->minishell);
+// 	_exit(EXIT_FAILURE);
+// }
 void	handle_generic_execve_error(t_cmd *cmd)
 {
-	print_error("-minishell: execve: ");
-	print_error(strerror(errno));
-	print_error("\n");
+	char	buf[ERROR_BUF_SIZE];
+
+	buf[0] = '\0';
+	ft_strlcpy(buf, "-minishell: execve: ", ERROR_BUF_SIZE);
+	ft_strlcat(buf, strerror(errno), ERROR_BUF_SIZE);
+	ft_strlcat(buf, "\n", ERROR_BUF_SIZE);
+	write(STDERR_FILENO, buf, ft_strlen(buf));
 	free_minishell(cmd->minishell);
 	_exit(EXIT_FAILURE);
 }
