@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:49:29 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/30 17:02:13 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 18:53:52 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
  */
 static uint8_t	execute_pipeline_or_binary(t_cmd *cmd)
 {
+
 	t_mshell	*minishell;
 	uint8_t		exit_status;
 

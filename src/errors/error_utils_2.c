@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:43:50 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/04/30 18:22:36 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 19:00:13 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,32 @@
  * @param exit_status Exit code to return.
  * @return The same `exit_status` passed in.
  */
-int	perror_return(char *msg, int exit_status)
+// int	perror_return(char *msg, int exit_status)
+// {
+// 	ft_putstr_fd("-minishell: ", STDERR_FILENO);
+// 	if (msg)
+// 		perror(msg);
+// 	return (exit_status);
+// }
+
+int	perror_return(const char *msg, int exit_status)
 {
-	ft_putstr_fd("-minishell: ", STDERR_FILENO);
+	char	buf[ERROR_BUF_SIZE];
+	const char	*err_msg;
+
+	buf[0] = '\0';
+	ft_strlcpy(buf, "-minishell: ", ERROR_BUF_SIZE);
 	if (msg)
-		perror(msg);
+	{
+		ft_strlcat(buf, msg, ERROR_BUF_SIZE);
+		ft_strlcat(buf, ": ", ERROR_BUF_SIZE);
+	}
+	err_msg = strerror(errno);
+	ft_strlcat(buf, err_msg, ERROR_BUF_SIZE);
+	ft_strlcat(buf, "\n", ERROR_BUF_SIZE);
+	write(STDERR_FILENO, buf, ft_strlen(buf));
 	return (exit_status);
 }
-
 /**
  * @brief Prints a system error using `perror()` and immediately exits the
  * child process.

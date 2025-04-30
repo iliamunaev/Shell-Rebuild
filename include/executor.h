@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:46:42 by imunaev-          #+#    #+#             */
-/*   Updated: 2025/04/30 18:27:27 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/04/30 19:01:01 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ t_mshell_var			*split_key_value(char *key_value_pair);
 void					safe_close(int *fd);
 
 // exit utils
-int						perror_return(char *msg, int exit_status);
+int						perror_return(const char *msg, int exit_status);
 uint8_t					perror_exit_child(t_cmd *cmd,
 							char *msg, u_int8_t exit_status);
 void					cmd_missing_command_error(t_cmd *cmd);
