@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:46:52 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/05 19:40:09 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/06 23:35:26 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	execute_command_core(t_cmd *cmd)
 	{
 		if (is_builtin(cmd))
 		{
+			signal(SIGPIPE, SIG_DFL);
 			if (ft_strcmp(cmd->argv[0], "env") == 0)
 				update_underscore(cmd, cmd->binary);
 			handle_builtin_and_exit(cmd);

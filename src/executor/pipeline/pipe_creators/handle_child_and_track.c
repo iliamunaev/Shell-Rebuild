@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:46:41 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/05 19:43:35 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/06 23:06:51 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,9 @@ void	handle_child_and_track(t_cmd *cmd, t_pipe_info *info)
 	info->pids[*info->idx] = pid;
 	if (pid == 0)
 	{
-		signal(SIGPIPE, SIG_IGN);
+		signal(SIGINT,  SIG_DFL);   // Ctrl+C kills child
+		signal(SIGQUIT, SIG_DFL);   // Ctrl+\ kills child
+		signal(SIGPIPE, SIG_DFL);   // Broken pipe → silent death
 		child_process(cmd, info->in_fd, info->pipe_fd, info->cmd_list);
 		free_cmd(&head);
 	}
