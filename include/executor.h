@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:46:42 by imunaev-          #+#    #+#             */
-/*   Updated: 2025/05/05 22:05:47 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 01:44:30 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ int						write_heredoc_to_pipe(t_cmd *cmd,
 void					close_unused_heredocs_child(t_cmd *current,
 							t_cmd *full_cmd_list);
 int						handle_heredoc_redirection(t_redir *r);
-
+void					exit_heredoc_interrupted(t_cmd *cmd);
+int handle_heredoc_status(int status);
 // utils
 t_mshell_var			*split_key_value(char *key_value_pair);
 void					safe_close(int *fd);

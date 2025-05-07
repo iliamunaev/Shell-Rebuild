@@ -3,43 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   write_heredoc_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:00:09 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/06 14:58:19 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/05/07 03:05:19 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Handles SIGINT in heredoc (child process).
- */
-void	heredoc_sigint_handler(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	_exit(1);
-}
+
 
 /**
  * @brief Setup signal handlers inside heredoc child process.
  */
-void	setup_heredoc_signals(void)
-{
-	//signal(SIGINT, heredoc_sigint_handler);
-	//signal(SIGQUIT, SIG_IGN);
-	struct sigaction sa;
 
-	ft_memset(&sa, 0, sizeof(sa)); // Инициализация структуры нулями
-	sa.sa_handler = heredoc_sigint_handler;
-	sa.sa_flags = 0; // Определите нужные флаги (например, SA_RESTART)
-	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		perror("sigaction(SIGINT) error in heredoc child"); // Обработка ошибки
-
-	signal(SIGQUIT, SIG_IGN);
-}
 
 /**
  * @brief Child: Reads user input and writes heredoc content to pipe.
@@ -56,8 +34,24 @@ int	run_heredoc_child(int pipe_fd, const char *delim, t_mshell *mshell, int expa
 	line = NULL;
 	total_written = 0;
 	write_status = EXIT_SUCCESS;
-	while (read_next_heredoc_line(&line, delim))
+	while (1)
 	{
+		fprintf(stderr, "DEBUG: run_heredoc_child, start\n");
+
+		int status = read_next_heredoc_line(&line, delim);
+
+		fprintf(stderr, "DEBUG: run_heredoc_child, read_next_heredoc_line status == %d\n", status);
+
+
+		if (status == EXIT_SUCCESS)
+			break ;
+		if (status == HEREDOC_INTERRUPTED)
+		{
+			free(line);
+			return (HEREDOC_INTERRUPTED);
+		}
+
+
 		total_written += ft_strlen(line) + 1;
 		if (heredoc_exceeds_limit(total_written))
 		{
@@ -75,7 +69,7 @@ int	run_heredoc_child(int pipe_fd, const char *delim, t_mshell *mshell, int expa
 			else
                 free(line);
             line = NULL;
-            
+
             write_status = write_heredoc_line(pipe_fd, expanded_line);
             free(expanded_line);
             if (write_status == WRITE_HERED_ERR)
@@ -94,3 +88,5 @@ int	run_heredoc_child(int pipe_fd, const char *delim, t_mshell *mshell, int expa
 		free(line);
 	return (EXIT_SUCCESS);
 }
+
+

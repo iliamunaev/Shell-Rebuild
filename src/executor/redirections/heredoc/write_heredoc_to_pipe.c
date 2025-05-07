@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_heredoc_to_pipe.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:38 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/06 15:15:05 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/05/07 03:06:13 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,17 @@ int write_heredoc_line(int pipe_fd, const char *line)
 
 int read_next_heredoc_line(char **line, const char *delimiter)
 {
+	fprintf(stderr, "DEBUG: read_next_heredoc_line, start\n");
+
 	if (isatty(fileno(stdin)))
 	{
 		*line = readline("> ");
+		if (*line == NULL)
+		{
+			// Ctrl+C pressed, readline was interrupted
+			write(STDOUT_FILENO, "\n", 1);
+			return (HEREDOC_INTERRUPTED);
+		}
 	}
 	else
 	{
@@ -55,7 +63,7 @@ int read_next_heredoc_line(char **line, const char *delimiter)
 			return (0);
 	}
 
-	if (*line == NULL || ft_strcmp(*line, delimiter) == 0)
+	if (ft_strcmp(*line, delimiter) == 0)
 	{
 		free(*line);
 		*line = NULL;
@@ -64,15 +72,34 @@ int read_next_heredoc_line(char **line, const char *delimiter)
 	return (1);
 }
 
-static int handle_heredoc_status(int status)
+
+int handle_heredoc_status(int status)
 {
+	fprintf(stderr, "DEBUG: handle_heredoc_status status: %d\n", status);
+
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
+		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFSIGNALED(status) && WTERMSIG(status) == SIGINT\n");
+
+		g_signal_flag = 1;
+		return (HEREDOC_INTERRUPTED);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFEXITED(status) && WEXITSTATUS(status) == 130\n");
+
 		g_signal_flag = 1;
 		return (HEREDOC_INTERRUPTED);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) == WRITE_HERED_ERR)
+	{
+		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFEXITED(status) && WEXITSTATUS(status) == WRITE_HERED_ERR\n");
 		return (WRITE_HERED_ERR);
+
+	}
+
+	fprintf(stderr, "DEBUG: handle_heredoc_status, OTHER\n");
+
 	return (EXIT_SUCCESS);
 }
 
@@ -111,45 +138,77 @@ static t_redir	*find_redir_by_delim(t_list *redirs, const char *delim)
 	return (EXIT_SUCCESS); // heredoc завершён нормально
 
  */
+// int write_heredoc_to_pipe(t_cmd *cmd, int pipe_fd, const char *delim)
+// {
+// 	pid_t pid;
+// 	int status;
+// 	int ret;
+// 	int expand_flag;
+// 	t_redir *heredoc_redir;
+// 	t_cmd	*head;
+
+// 	// --- Находим нужный редирект и его флаг ---
+// 	heredoc_redir = find_redir_by_delim(cmd->redirs, delim);
+// 	if (heredoc_redir)
+// 	{
+// 		expand_flag = heredoc_redir->expand_in_heredoc;
+// 	}
+// 	else
+// 	{
+// 		// Эта ситуация не должна возникать при корректном парсинге
+// 		print_error("Internal error: heredoc delimiter not found.\n");
+// 		expand_flag = 0; // По умолчанию не раскрываем
+// 	}
+// 	head = get_cmd_head(cmd);
+// 	pid = fork();
+// 	if (pid == -1)
+// 		return (perror_return("fork", WRITE_HERED_ERR));
+// 	if (pid == 0)
+// 	{
+// 		ret = run_heredoc_child(pipe_fd, delim, cmd->minishell, expand_flag);
+// 		safe_close(&pipe_fd);
+// 		if (ret == WRITE_HERED_ERR)
+// 			exit_heredoc_interrupted(cmd);
+// 		free_minishell(&cmd->minishell);
+// 		free_cmd(&head);
+// 		_exit(ret);
+
+// 	}
+// 	signal(SIGINT, SIG_IGN);
+// 	signal(SIGQUIT, SIG_IGN);
+// 	safe_close(&pipe_fd);
+
+// 	free_minishell(&cmd->minishell);
+// 	waitpid(pid, &status, 0);
+
+
+// 	if (WIFSIGNALED(status))
+// 		fprintf(stderr, "DEBUG: Child exited due to signal: %d\n", WTERMSIG(status));
+// 	else if (WIFEXITED(status))
+// 		fprintf(stderr, "DEBUG: Child %d exited with code: %d\n", getpid(), WEXITSTATUS(status));
+// 	else
+// 		fprintf(stderr, "DEBUG: Unknown child exit\n");
+
+
+// 	signal(SIGINT, handle_sigint);
+// 	signal(SIGQUIT, handle_sigquit);
+// 	return (handle_heredoc_status(status));
+// }
 int write_heredoc_to_pipe(t_cmd *cmd, int pipe_fd, const char *delim)
 {
-	pid_t pid;
-	int status;
-	int ret;
-	int expand_flag;
-	t_redir *heredoc_redir;
-	t_cmd	*head;
+	t_redir	*heredoc_redir;
+	// t_cmd	*head;
+	int		ret;
+	int		expand_flag;
 
-	// --- Находим нужный редирект и его флаг ---
+	// head = get_cmd_head(cmd);
 	heredoc_redir = find_redir_by_delim(cmd->redirs, delim);
-	if (heredoc_redir)
-	{
-		expand_flag = heredoc_redir->expand_in_heredoc;
-	}
-	else
-	{
-		// Эта ситуация не должна возникать при корректном парсинге
-		print_error("Internal error: heredoc delimiter not found.\n");
-		expand_flag = 0; // По умолчанию не раскрываем
-	}
-	head = get_cmd_head(cmd);
-	pid = fork();
-	if (pid == -1)
-		return (perror_return("fork", WRITE_HERED_ERR));
-	if (pid == 0)
-	{
-		ret = run_heredoc_child(pipe_fd, delim, cmd->minishell, expand_flag);
-		safe_close(&pipe_fd);
-		free_minishell(&cmd->minishell);
-		free_cmd(&head);
-		_exit(ret);
-	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	safe_close(&pipe_fd);
-	free_minishell(&cmd->minishell);
-	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigquit);
-	return (handle_heredoc_status(status));
+	expand_flag = (heredoc_redir) ? heredoc_redir->expand_in_heredoc : 0;
+
+	ret = run_heredoc_child(pipe_fd, delim, cmd->minishell, expand_flag);
+
+	fprintf(stderr, "DEBUG: write_heredoc_to_pipe, ret == %d\n", ret);
+
+
+	return (ret);
 }

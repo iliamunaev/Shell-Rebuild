@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:49:29 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/05 19:48:22 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 02:38:27 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,21 @@ uint8_t	handle_executor_signal_exit(t_cmd *cmd,
 {
 	t_cmd	*head;
 
+	fprintf(stderr, "DEBUG: handle_executor_signal_exit, exit_status: %d\n", exit_status);
+
+
 	head = get_cmd_head(cmd);
+	fprintf(stderr, "DEBUG: handle_executor_signal_exit, g_signal_flag: %d\n", g_signal_flag);
 	if (g_signal_flag)
 	{
 		g_signal_flag = 0;
-		close_all_heredoc_fds(cmd);
-		free_minishell(&cmd->minishell);
-		free_cmd(&head);
+
+		if (!head)
+			fprintf(stderr, "DEBUG: handle_executor_signal_exit, NO head\n");
+
+		close_all_heredoc_fds(head);
+		// free_minishell(&head->minishell);
+		// free_cmd(&head);
 		return (minishell->exit_status = 130);
 	}
 	close_all_heredoc_fds(cmd);
@@ -122,6 +130,9 @@ uint8_t	run_executor(t_cmd *cmd)
 	if (command_too_long(cmd->argv))
 		return (error_return("run_executor: command too long\n", 2));
 	exit_status = apply_heredocs(cmd);
+
+	fprintf(stderr, "DEBUG: apply_heredocs return exit_status: %d\n", exit_status);
+
 	if (exit_status != EXIT_SUCCESS || g_signal_flag)
 		return (handle_executor_signal_exit(cmd, minishell, exit_status));
 	return (run_executor_core(cmd));
