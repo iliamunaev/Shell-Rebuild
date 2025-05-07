@@ -31,7 +31,7 @@ valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./
 ```
 
 ```bash
-valgrind --leak-check=full --trace-children=yes --gen-suppressions=all --show-leak-kinds=all --track-fds=yes --suppressions=readline.supp ./minishell
+valgrind --leak-check=full --trace-children=yes --gen-suppressions=all --show-leak-kinds=all --track-fds=yes --suppressions=mshell.supp ./minishell
 ```
 
 ```bash

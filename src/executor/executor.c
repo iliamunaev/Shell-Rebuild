@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:49:29 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/07 02:38:27 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 10:56:51 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,27 @@ uint8_t	handle_executor_signal_exit(t_cmd *cmd,
 {
 	t_cmd	*head;
 
-	fprintf(stderr, "DEBUG: handle_executor_signal_exit, exit_status: %d\n", exit_status);
+	fprintf(stderr, "DEBUG: %d: handle_executor_signal_exit, exit_status: %d\n", getpid(), exit_status);
 
 
 	head = get_cmd_head(cmd);
-	fprintf(stderr, "DEBUG: handle_executor_signal_exit, g_signal_flag: %d\n", g_signal_flag);
+	fprintf(stderr, "DEBUG: %d: handle_executor_signal_exit, g_signal_flag: %d\n",  getpid(), g_signal_flag);
 	if (g_signal_flag)
 	{
 		g_signal_flag = 0;
 
-		if (!head)
-			fprintf(stderr, "DEBUG: handle_executor_signal_exit, NO head\n");
 
 		close_all_heredoc_fds(head);
 		// free_minishell(&head->minishell);
 		// free_cmd(&head);
+
+		fprintf(stderr, "DEBUG: %d: handle_executor_signal_exit, RETURN: %d and g_signal_flag  %d\n", getpid(),130, g_signal_flag);
+
 		return (minishell->exit_status = 130);
 	}
 	close_all_heredoc_fds(cmd);
+	fprintf(stderr, "DEBUG: %d: handle_executor_signal_exit, RETURN: %d and g_signal_flag  %d\n", getpid(),exit_status, g_signal_flag);
+
 	return (exit_status);
 }
 
@@ -131,7 +134,7 @@ uint8_t	run_executor(t_cmd *cmd)
 		return (error_return("run_executor: command too long\n", 2));
 	exit_status = apply_heredocs(cmd);
 
-	fprintf(stderr, "DEBUG: apply_heredocs return exit_status: %d\n", exit_status);
+	fprintf(stderr, "DEBUG: %d: apply_heredocs RETURN: %d\n", getpid(), exit_status);
 
 	if (exit_status != EXIT_SUCCESS || g_signal_flag)
 		return (handle_executor_signal_exit(cmd, minishell, exit_status));

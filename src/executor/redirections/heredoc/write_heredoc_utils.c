@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:00:09 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/07 03:05:19 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 10:22:03 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ int	run_heredoc_child(int pipe_fd, const char *delim, t_mshell *mshell, int expa
 	int     write_status;
 
 	setup_heredoc_signals();
+	
 	disable_echoctl();
 	line = NULL;
 	total_written = 0;
 	write_status = EXIT_SUCCESS;
 	while (1)
 	{
-		fprintf(stderr, "DEBUG: run_heredoc_child, start\n");
+		fprintf(stderr, "\n------------DEBUG: %d: run_heredoc_child, start\n", getpid());
 
 		int status = read_next_heredoc_line(&line, delim);
 

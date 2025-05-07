@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:38 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/07 03:06:13 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 10:15:35 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,47 @@ int write_heredoc_line(int pipe_fd, const char *line)
 	return (EXIT_SUCCESS);
 }
 
+
 int read_next_heredoc_line(char **line, const char *delimiter)
 {
-	fprintf(stderr, "DEBUG: read_next_heredoc_line, start\n");
+	fprintf(stderr, "DEBUG: %d: read_next_heredoc_line, start with g_signal_flag: %d\n", getpid(), g_signal_flag);
+
+	*line = NULL;
+
+	// fprintf(stderr, "DEBUG: %d: read_next_heredoc_line, g_signal_flag: %d\n",  getpid(), g_signal_flag);
+
 
 	if (isatty(fileno(stdin)))
 	{
 		*line = readline("> ");
-		if (*line == NULL)
+		fprintf(stderr, "DEBUG: %d: read_next_heredoc_line, g_signal_flag: %d\n",  getpid(), g_signal_flag);
+		if (g_signal_flag)
 		{
-			// Ctrl+C pressed, readline was interrupted
+
+			if (*line)
+				free(*line);
+			*line = NULL;
 			write(STDOUT_FILENO, "\n", 1);
 			return (HEREDOC_INTERRUPTED);
 		}
+		if (*line == NULL) // EOF or Ctrl+D
+			return (0);
 	}
 	else
 	{
 		char *line2 = get_next_line(fileno(stdin));
 		if (!line2)
-		{
-			*line = NULL;
 			return (0);
-		}
 		*line = ft_strtrim(line2, "\n");
 		free(line2);
 		if (!*line)
 			return (0);
+		if (g_signal_flag)
+		{
+			free(*line);
+			*line = NULL;
+			return (HEREDOC_INTERRUPTED);
+		}
 	}
 
 	if (ft_strcmp(*line, delimiter) == 0)
@@ -75,13 +90,16 @@ int read_next_heredoc_line(char **line, const char *delimiter)
 
 int handle_heredoc_status(int status)
 {
-	fprintf(stderr, "DEBUG: handle_heredoc_status status: %d\n", status);
+	// fprintf(stderr, "DEBUG: handle_heredoc_status status: %d\n", status);
 
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFSIGNALED(status) && WTERMSIG(status) == SIGINT\n");
 
 		g_signal_flag = 1;
+
+		fprintf(stderr, "DEBUG: %d: handle_heredoc_status RETURN: %d\n", getpid(), HEREDOC_INTERRUPTED);
+
 		return (HEREDOC_INTERRUPTED);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
@@ -89,16 +107,22 @@ int handle_heredoc_status(int status)
 		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFEXITED(status) && WEXITSTATUS(status) == 130\n");
 
 		g_signal_flag = 1;
+
+		fprintf(stderr, "DEBUG: %d: handle_heredoc_status RETURN: %d\n", getpid(), HEREDOC_INTERRUPTED);
+
 		return (HEREDOC_INTERRUPTED);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) == WRITE_HERED_ERR)
 	{
 		fprintf(stderr, "DEBUG: handle_heredoc_status, WIFEXITED(status) && WEXITSTATUS(status) == WRITE_HERED_ERR\n");
+		fprintf(stderr, "DEBUG: %d: handle_heredoc_status RETURN: %d\n", getpid(), WRITE_HERED_ERR);
+
 		return (WRITE_HERED_ERR);
 
 	}
 
-	fprintf(stderr, "DEBUG: handle_heredoc_status, OTHER\n");
+	fprintf(stderr, "DEBUG: %d: handle_heredoc_status RETURN: %d\n", getpid(), EXIT_SUCCESS);
+
 
 	return (EXIT_SUCCESS);
 }
