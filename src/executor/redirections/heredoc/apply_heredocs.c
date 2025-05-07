@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:58:28 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/07 11:06:40 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/07 11:31:22 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void heredoc_sigint_handler(int sig)
     write(STDOUT_FILENO, "\n", 1);
 	// g_signal_flag = 1;
 
-	fprintf(stderr, "DEBUG: %d: heredoc_sigint_handler before _exit()\n", getpid());
+	fprintf(stderr, "DEBUG: %d: IN heredoc_sigint_handler before\n", getpid());
 
     // return(130);
 }
