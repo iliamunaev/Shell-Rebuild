@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:11:18 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 13:07:32 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:55:19 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,11 @@ t_cmd	*run_parser(t_mshell *minishell, char *input)
 	debug_printf("\nTokenizing: %s\n\n", input);
 	tokens = tokenize_input(input);
 	if (!tokens)
-		return (NULL);
+	{
+		free_minishell(&minishell);
+		free(input);
+		exit(1);
+	}
 	expand_tokens(tokens, minishell);
 	if (check_for_unsupported_syntax(minishell, input) != EXIT_SUCCESS)
 	{
