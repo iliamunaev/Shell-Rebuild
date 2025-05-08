@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:11:18 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/06 13:45:00 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:07:32 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,11 @@ t_cmd	*run_parser(t_mshell *minishell, char *input)
 	group_word_tokens(tokens);
 	strip_words(tokens);
 	cmd = create_command_from_tokens(minishell, tokens);
+	if (!cmd) // test
+	{
+		token_array_free(tokens);
+		return (NULL);
+	}
 	debug_print_tokens(tokens);
 	debug_print_parsed_commands(cmd);
 	token_array_free(tokens);

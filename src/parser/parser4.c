@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:11:07 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/06 15:09:08 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:38:32 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,30 @@
 static int	process_redir_token(t_redir_ctx *ctx)
 {
 	t_TokenType	type;
+	t_list		*last;
 
 	type = ctx->tokens->tokens[*ctx->i].type;
 	if (!is_valid_redir_target(ctx->tokens, *ctx->i))
 	{
 		print_error("syntax error near unexpected token\n");
-		free_cmd_list(ctx->cmd_list);
 		return (ERROR_UNEXPECTED_TOKEN);
 	}
 	if (!*ctx->current)
 	{
 		if (init_redir_command_if_needed(ctx) < 0)
+		{
+			free_cmd_node(*ctx->current);
 			return (-1);
+		}
 	}
 	if (apply_redirection(ctx, type) < 0)
+	{
+		free_cmd(ctx->current);
+		last = ft_lstlast(*ctx->cmd_list);
+		if (last)
+			last->content = NULL;
 		return (-1);
+	}
 	*ctx->i += 2;
 	return (0);
 }
@@ -99,7 +108,7 @@ static void	finalize_commands(t_cmd *head)
 /**
  * @brief Iterates through tokens and builds command list.
  *
- * @param ctx Full parser context with references to shell, tokens, 
+ * @param ctx Full parser context with references to shell, tokens,
  * and current state.
  * @return 0 on success, -1 on failure.
  */
@@ -118,7 +127,10 @@ static int	parse_tokens(t_parse_ctx *ctx)
 			if (status == ERROR_UNEXPECTED_TOKEN)
 				return (ERROR_UNEXPECTED_TOKEN);
 			else if (status < 0)
+			{
+				free_cmd_list(ctx->cmd_list);
 				return (-1);
+			}
 		}
 		else if (ctx->tokens->tokens[ctx->i].type == TOKEN_WORD)
 		{
@@ -143,7 +155,7 @@ static int	parse_tokens(t_parse_ctx *ctx)
  *
  * @param shell Minishell context.
  * @param tokens Array of tokens representing the parsed input line.
- * @return Pointer to the first command in the constructed linked list, 
+ * @return Pointer to the first command in the constructed linked list,
  * or NULL on error.
  */
 t_cmd	*create_command_from_tokens(t_mshell *shell, t_TokenArray *tokens)

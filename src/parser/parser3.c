@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:10:38 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 08:49:10 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:24:21 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,21 @@ void	process_pipe_token(t_cmd **current, int *i)
 
 int	init_redir_command_if_needed(t_redir_ctx *ctx)
 {
+	t_list	*new_node;
+
 	*ctx->current = create_empty_command(ctx->shell);
 	if (!*ctx->current)
 	{
+		return (-1);
+	}
+	new_node = ft_lstnew(*ctx->current);
+	if (!new_node)
+	{
+		free_cmd(ctx->current);
 		free_cmd_list(ctx->cmd_list);
 		return (-1);
 	}
-	ft_lstadd_back(ctx->cmd_list, ft_lstnew(*ctx->current));
+	ft_lstadd_back(ctx->cmd_list, new_node);
 	return (0);
 }
 

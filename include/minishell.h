@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 11:56:20 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/08 11:58:18 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:33:56 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ void			print_error(const char *msg);
 void			free_minishell(t_mshell **minishell);
 void			free_cmd(t_cmd **cmd);
 void			free_mshell_var(t_mshell_var *var);
+void			free_cmd_node(t_cmd *cmd);
 
 int				readline_interrupt_hook(void);
 void			free_ptr(void **ptr);

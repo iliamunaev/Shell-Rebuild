@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:49:35 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/08 10:00:40 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:36:46 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,12 @@ void	free_ptr(void **ptr)
 		free(*ptr);
 		*ptr = NULL;
 	}
+}
+
+void	free_cmd_node(t_cmd *cmd)
+{
+	if (!cmd)
+		return ;
+	free_single_cmd(cmd);
+	free(cmd);
 }

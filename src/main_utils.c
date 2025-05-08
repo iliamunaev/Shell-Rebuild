@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Pavel Vershinin <pvershin@student.hive.    +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:13:12 by imunaev-          #+#    #+#             */
-/*   Updated: 2025/05/08 10:39:27 by Pavel Versh      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:20:34 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ char	*read_user_input(void)
  */
 bool	handle_null_command(t_mshell *mshell, char **input_ptr)
 {
-	char	*input;
+	// char	*input;
 
-	input = *input_ptr;
-	if (input)
-		free(input);
+	// input = *input_ptr;
+	// if (input)
+	// 	free(input);
 	if (g_signal_flag)
 	{
 		mshell->exit_status = 130;
