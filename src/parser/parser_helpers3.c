@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 14:05:00 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 13:48:25 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:46:16 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	apply_input_redir(t_cmd **current, t_Token *token)
 		print_error("Syntax error: missing name for redirection\n");
 		return (-1);
 	}
-	redir = malloc(sizeof(t_redir)); // tested
+	redir = malloc(sizeof(t_redir));
 	if (!redir)
 	{
 		print_error("-minishell: parser, apply_input_redir, maaloc failed\n");
@@ -86,7 +86,7 @@ static int	apply_output_redir(t_cmd **current, t_Token *token)
 		print_error("Syntax error: missing name for redirection\n");
 		return (-1);
 	}
-	redir = malloc(sizeof(t_redir)); // tested
+	redir = malloc(sizeof(t_redir));
 	if (!redir)
 	{
 		print_error("-minishell: parser, apply_output_redir, maaloc failed\n");

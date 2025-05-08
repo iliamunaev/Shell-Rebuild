@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:12:47 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 14:19:21 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:45:49 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_Tokenizer	*tokenizer_create(const char *input)
 	t_Tokenizer	*tokenizer;
 	size_t		len;
 
-	tokenizer = malloc(sizeof(t_Tokenizer)); // tested
+	tokenizer = malloc(sizeof(t_Tokenizer));
 	if (!tokenizer)
 	{
 		print_error("-minishell: tokenizer malloc failed\n");
@@ -43,7 +43,7 @@ t_Tokenizer	*tokenizer_create(const char *input)
 	tokenizer->input = input;
 	tokenizer->input_base = input;
 	tokenizer->buffer_size = len + 1;
-	tokenizer->buffer = malloc(tokenizer->buffer_size); // tested
+	tokenizer->buffer = malloc(tokenizer->buffer_size);
 	if (!tokenizer->buffer)
 	{
 		print_error("-minishell: tokenizer buffer malloc failed\n");

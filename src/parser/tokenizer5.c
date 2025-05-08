@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:19:19 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 14:42:38 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:44:57 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_Token	tokenizer_parse_redirection(t_Tokenizer *tokenizer)
  * @param tokenizer Pointer to the tokenizer.
  * @return t_Token Parsed operator token.
  */
-t_Token tokenizer_parse_operator(t_Tokenizer *tokenizer)
+t_Token	tokenizer_parse_operator(t_Tokenizer *tokenizer)
 {
 	t_Token	token;
 
