@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:09:26 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 13:50:26 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 13:58:35 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,19 @@ t_TokenArray	*token_array_init(void)
 {
 	t_TokenArray	*array;
 
-	// array = (t_TokenArray *)malloc(sizeof(t_TokenArray));
-	array = NULL;
+	array = (t_TokenArray *)malloc(sizeof(t_TokenArray)); // tested
 	if (!array)
 	{
 		print_error("-minishell: failed to allocate token array\n");
 		return(NULL);
 	}
 	array->capacity = 16;
-	array->tokens = (t_Token *)malloc(sizeof(t_Token) * array->capacity);
+	array->tokens = (t_Token *)malloc(sizeof(t_Token) * array->capacity); // tested
 	if (!array->tokens)
 	{
-		print_error("Failed to allocate tokens buffer\n");
+		print_error("-minishell: failed to allocate tokens buffer\n");
 		free(array);
-		exit(1);
+		return(NULL);
 	}
 	array->count = 0;
 	return (array);

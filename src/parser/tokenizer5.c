@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:19:19 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 11:43:13 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:42:38 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_Token	tokenizer_parse_redirection(t_Tokenizer *tokenizer)
  * @param tokenizer Pointer to the tokenizer.
  * @return t_Token Parsed operator token.
  */
-t_Token	tokenizer_parse_operator(t_Tokenizer *tokenizer)
+t_Token tokenizer_parse_operator(t_Tokenizer *tokenizer)
 {
 	t_Token	token;
 
@@ -66,7 +66,12 @@ t_Token	tokenizer_parse_operator(t_Tokenizer *tokenizer)
 		token.type = TOKEN_BACKGROUND;
 	token.value = malloc(2);
 	if (!token.value)
-		exit(1);
+	{
+		print_error("-minishell: token.value malloc failed\n");
+		tokenizer_destroy(tokenizer);
+		token.type = TOKEN_VALUE_FAIL;
+		return (token);
+	}
 	token.value[0] = *tokenizer->input++;
 	token.value[1] = '\0';
 	return (token);

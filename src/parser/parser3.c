@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:10:38 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 13:24:21 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:13:33 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	group_word_tokens(t_TokenArray *tokens)
 	if (!tokens || tokens->count <= 1)
 		return (0);
 	new_count = count_new_tokens(tokens);
-	new_tokens.tokens = malloc(sizeof(t_Token) * new_count);
+	new_tokens.tokens = malloc(sizeof(t_Token) * new_count); // tested
 	if (!new_tokens.tokens)
 		return (-1);
 	new_tokens.capacity = new_count;

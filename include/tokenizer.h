@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pvershin <pvershin@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:20:40 by pvershin          #+#    #+#             */
-/*   Updated: 2025/04/25 13:47:48 by pvershin         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:26:03 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ typedef enum e_possible_tokens
 	TOKEN_BACKGROUND,
 	TOKEN_HEREDOC,
 	TOKEN_EMPTY,
-	TOKEN_EOF
+	TOKEN_EOF,
+	TOKEN_VALUE_FAIL
 }				t_TokenType;
 
 // quote_style; // 0 = none, 1 = single, 2 = double

@@ -6,7 +6,7 @@
 /*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:11:18 by pvershin          #+#    #+#             */
-/*   Updated: 2025/05/08 13:55:19 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/08 14:41:51 by Ilia Munaev      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ static t_TokenArray	*tokenize_input(char *input)
 		token = get_next_token(tokenizer);
 		if (token.type == TOKEN_EOF)
 			break ;
+		if (token.type == TOKEN_VALUE_FAIL)
+		{
+			token_array_free(tokens);
+			return (NULL);
+		}
 		token_array_add(tokens, token);
 		token.value = NULL;
 	}
