@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_hash_table.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Ilia Munaev <ilyamunaev@gmail.com>         +#+  +:+       +#+        */
+/*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:50:27 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/08 09:50:48 by Ilia Munaev      ###   ########.fr       */
+/*   Updated: 2025/05/09 16:41:25 by imunaev-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ static int	add_oldpwd_from_home(t_mshell *mshell)
 	home = ms_getenv(mshell, "HOME");
 	if (!home)
 	{
-		print_error("minishell: load_env_into_ht: get home dir failed\n");
-		return (EXIT_FAILURE);
+		// print_error("minishell: load_env_into_ht: get home dir failed\n");
+		// return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	
 	}
 	if (set_variable(mshell, "OLDPWD", home, 1) != EXIT_SUCCESS)
 	{
