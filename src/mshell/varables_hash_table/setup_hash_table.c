@@ -6,7 +6,7 @@
 /*   By: imunaev- <imunaev-@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:50:27 by Ilia Munaev       #+#    #+#             */
-/*   Updated: 2025/05/09 16:41:25 by imunaev-         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:52:28 by imunaev-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ static void	insert_env_var(t_mshell *mshell, char *entry)
 static int	add_oldpwd_from_home(t_mshell *mshell)
 {
 	char	*home;
+	char	working_dir[MS_PATHMAX];
 
 	home = ms_getenv(mshell, "HOME");
 	if (!home)
 	{
+		home = getcwd(working_dir, MS_PATHMAX);
+		set_variable(mshell, "PWD", home, 1);
 		// print_error("minishell: load_env_into_ht: get home dir failed\n");
 		// return (EXIT_FAILURE);
 		return (EXIT_SUCCESS);
