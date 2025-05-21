@@ -1,6 +1,7 @@
 # Shell-Rebuild / Minishell
 
-**Minishell** is a simplified Unix shell implemented in C. It replicates key features of `bash`, including command parsing, pipelines, redirections, environment variable handling, and built-in commands.
+**Minishell** is a simplified Unix shell implemented in C. It replicates key features of `bash`, including command parsing, pipelines, redirections, environment variable handling, and built-in commands.  
+The project showcases system programming skills, including low-level process control, signal handling, file descriptor management, and interaction with the Unix operating system.
 
 
 ## Contributors
